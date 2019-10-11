@@ -11,6 +11,8 @@ library(tidyverse)
 devtools:: install_github("p8105/p8105.datasets")
 ```
 
+# Problem 1
+
 _ Import Instacart Data
 ```{r message=FALSE, warning=FALSE}
 instacart_data = 
@@ -197,6 +199,50 @@ data("brfss_smart2010")
 ```
 
 
+_ In 2002, which states were observed at 7 or more locations? What about in 2010?
+
+* In Year 2002, CT, FL, MA, NC, NJ, and PA were observed at 7 or more locations. 
+
+```{r}
+  library(p8105.datasets)
+data("brfss_smart2010")  
+
+brfss_smart2010 %>% 
+  filter(Year == "2002") %>% 
+  rename(state = Locationabbr, county = Locationdesc) %>% 
+  distinct(state, county) %>% 
+  count(state) %>% 
+  filter(n >= 7) 
+```
+
+* In Year 2010, CA, CO, FL, MA, MD, NC, NE, NJ, NY, and OH were observed at 7 or more locations. 
+
+```{r}
+  library(p8105.datasets)
+data("brfss_smart2010")  
+
+brfss_smart2010 %>% 
+  filter(Year == "2010") %>% 
+  rename(state = Locationabbr, county = Locationdesc) %>% 
+  distinct(state, county) %>% 
+  count(state) %>% 
+  filter(n >= 7) 
+```
+
+_ Constructing a Dataset with year, state, only excellent responses, and an average of data_value 
+
+```{r, warning= FALSE}
+library(p8105.datasets)
+data("brfss_smart2010")
+
+ brfss_smart2010_clean = 
+    brfss_smart2010 %>%  
+    separate("Locationdesc", into = c("State","County")) %>% 
+    select("Year", "State", "Response", "Data_value") %>% 
+    filter(Response == "Excellent") %>% 
+    group_by(Year, State) %>% 
+    summarize(mean_value = mean(Data_value, na.rm = TRUE))
+```
 
 
 

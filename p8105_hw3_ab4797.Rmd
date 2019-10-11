@@ -1,0 +1,48 @@
+---
+title: "Homework 3: p8105_hw3_ab4797.git"
+author: "Ani Bilazarian"
+date: "10/11/2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+devtools:: install_github("p8105/p8105.datasets")
+```
+
+_ Import Instacart Data
+```{r message=FALSE, warning=FALSE}
+instacart_data = 
+  library(p8105.datasets)
+data("instacart") 
+```
+
+_ Clean & Import Data 
+
+* Change Product Name to a factor variable
+* Renaming variables
+
+```{r}
+instacart = 
+  instacart %>% 
+  janitor::clean_names() %>% 
+  rename("order_cart" = add_to_cart_order, "day" = order_dow, "hour" = order_hour_of_day, "name" = product_name) %>% 
+  mutate(name = as.factor(name))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

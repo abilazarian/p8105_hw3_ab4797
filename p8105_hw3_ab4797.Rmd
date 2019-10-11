@@ -55,7 +55,39 @@ instacart %>%
 ```
 
 
+_ Understanding average day and average hour of purchases
 
+* Here we are looking at the product name and the average day and hour people are ordering products. For example, of 461 orders of 1% Lowfat Milk, the average day to buy was 2.7 and 13th hour. So people are buying milk at the middle of their days! That is approximately the same day and hour that pepole are buying 100 calorie per bag popcorn, interesting! 
+
+```{r}
+instacart %>% 
+   group_by(name) %>% 
+  summarize(n = n(),
+            mean_hour = mean(hour, na.rm = TRUE), 
+            mean_day = mean(day, na.rm = TRUE)
+            ) %>% 
+    mutate(product_ranking = min_rank(n))
+```
+
+
+_ Counting Aisles 
+
+* Here we can see that there are 134 aisles. 
+
+```{r}
+instacart %>% 
+count(aisle_id, aisle)
+```
+
+_ Which aisles are the most items ordered from? 
+
+* Here we can see the top 5 aisles that items are ordered from. The aisles with the top purchases are "water seltzer sparkling water" and "yogurt". In fact, there are more purchases from the yogurt aisle then the last three combined! What does this mean for lactose intolerance. 
+
+```{r}
+instacart %>% 
+  count(aisle) %>%
+  filter(min_rank(desc(aisle)) < 6 )
+```
 
 
 

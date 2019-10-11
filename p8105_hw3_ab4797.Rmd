@@ -141,7 +141,60 @@ instacart %>%
           knitr::kable()
 ```
 
+_ Table showing mean hour of the day when Pink Lady Apples and Coffee Ice Cream are ordered on each day of the week
 
+* We can see that the mean hour of the day most orders occur is between 12-15 indicating that people are online shopping at work!! 
+
+```{r}
+instacart %>% 
+    mutate(day = recode(day,
+                   '1' = "monday", 
+                   '2' = "tuesday", 
+                   '3' = "wednesday", 
+                   '4' = "thursday", 
+                   '5' = "friday",
+                   '6' = "saturday", 
+                   '0' = "sunday"))  %>% 
+    filter(name %in% c("Pink Lady Apples", "Coffee Ice Cream")) %>% 
+    select(name, day, hour) %>% 
+    group_by(name, day) %>% 
+    summarise(mean_hour = round(mean(hour, na.rm = TRUE))) %>% 
+    spread(key = day, value = mean_hour) %>% 
+    knitr::kable()
+```
+
+# PROBLEM 2 
+
+
+_ Importing BRFFS Data
+
+```{r}
+  library(p8105.datasets)
+data("brfss_smart2010") 
+```
+
+# Problem 2 Cleaning
+_ Clean BRFSS Data 
+
+* I have cleaned the data here, renamed variables and organized just by "Overall Health." I changed my variable to be a factor vector, but my code won't run so I have attached it here. I have tried to sort and order but both won't work. 
+
++ sort.list(response, partial = NULL, na.last = TRUE, decreasing = FALSE, method = c("Poor", "Fair", "Good", "Very Good", "Excellent"))
+ 
+ + order(oops_brfss_smart2010, response, na.last = TRUE, decreasing = FALSE, method = c("Poor", "Fair", "Good", "Very Good", "Excellent"))
+
+```{r}
+  library(p8105.datasets)
+data("brfss_smart2010") 
+
+  brfss_smart2010 = 
+  brfss_smart2010 %>%  
+  janitor::clean_names() %>% 
+      rename(state = locationabbr, county = locationdesc) %>% 
+        select(year:data_value) %>% 
+  filter(topic == "Overall Health") %>% 
+    filter(response == c("Poor", "Fair", "Good", "Very Good", "Excellent")) %>%
+            mutate(response = as.factor(response))
+```
 
 
 

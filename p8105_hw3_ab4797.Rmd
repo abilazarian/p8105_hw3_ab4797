@@ -262,7 +262,7 @@ data("brfss_smart2010")
     filter(Response == "Excellent") %>% 
    group_by(Year, State) %>% 
   summarize(mean_value = mean(Data_value, na.rm = TRUE)) %>% 
-ggplot(aes (x = Year, y = mean_value, color = State)) + geom_point() + geom_line()
+ggplot(aes (x = Year, y = mean_value, color = State)) + geom_point() + geom_line() + labs(title = "Spaghetti Plot Showing Excellent Responses", x = "Year", y = "Average of data values") + viridis::scale_color_viridis(discrete = TRUE) + theme_minimal() + theme(legend.position = "right") 
 
 ```
 

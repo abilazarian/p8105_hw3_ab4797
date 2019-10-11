@@ -91,6 +91,55 @@ instacart %>%
 
 
 
+_ Plot showing the number of items ordered in each aisle 
+
+```{r making my plot pretty, message=FALSE}
+library(ggridges)
+library(patchwork)
+library(viridis)
+
+knitr::opts_chunk$set(
+  echo = TRUE,
+  fig.width = 6,
+  fig.asp = .6,
+  out.width = "90%"
+)
+
+options(
+  ggplot2.continuous.color = "viridis",
+  ggplot2.continuous.fill = "viridis")
+
+scale_colour_discrete = scale_colour_viridis_d
+scale_fill_discrete = scale_fill_viridis_d
+
+theme_set(theme_bw() + theme(legend.position = "bottom"))
+```
+
+
+```{r making the plot}
+library(forcats)
+instacart %>% 
+  count(aisle) %>% 
+  filter( n > 10000) %>% 
+  mutate(aisle = fct_reorder(aisle, n, .desc = TRUE)) %>% 
+  ggplot (aes(x = aisle, y = n)) + coord_flip() + 
+	  geom_bar(stat = "identity") + labs(title = "Plot of Items Ordered for each Aisle", x = "Aisle ", y = "number of orders")
+```
+
+
+_ Table showing 3 most popular items in each of the aisles 
+
+This table allows us to see the most popular items from three aisles. In the baking aisle the top products are 1) light brown sugar 2) baking soda and 3) cane sugar. In the vegetables/fruits aisle the top ingredients are 1) baby spinach 2) rasberries and 3) blueberries. In dog food care, the top products are 1) Snack Sticks 2) Organix Chicken, and 3) Small dog biscuits. 
+
+```{r}
+instacart %>% 
+      filter(aisle %in% c("baking ingredients", "dog food care", "packaged vegetables fruits")) %>% 
+           group_by(aisle, name) %>% 
+           summarize(n = n()) %>% 
+           top_n(3) %>% 
+           arrange(desc(n)) %>% 
+          knitr::kable()
+```
 
 
 

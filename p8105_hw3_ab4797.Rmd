@@ -31,8 +31,28 @@ instacart =
   mutate(name = as.factor(name))
 ```
 
+_ Explore Data 
 
+* The instacart dataset comes from an online grocery service with over 3 million online grocery orders from more than 200,000 Instacart users. This dataset allows us to observe trends in online grocery purchasing. The main variables are name (indicating the type of product), aisle (indicating which aisle the product came from) and the hour and day of the week that these items were ordered. Here are a variety of ways we can explore the data. With summmarize, we can observe the different types of products and how many people order. 
 
+```{r}
+instacart %>% 
+  group_by(name) %>% 
+  summarize(n= n())
+```
+
+_ Exploratory plot
+
+* I started doing exploratory plots and saw quite quickly that the distribution of products ordered is extremely right skewed. There are by far fewer products that people order time and time again (> 5000) then items that are bought infrequently I wanted to identify which products are ordered by far the most. These are Bananas, Strawberries, Spinach, and other fruits and vegetables. 
+
+```{r}
+instacart %>% 
+  count(name) %>% 
+  filter(n > 5000) %>% 
+  mutate(name = fct_reorder(name, n, .desc = TRUE)) %>% 
+  ggplot (aes(x = name, y = n)) + coord_flip() + 
+	  geom_bar(stat = "identity") + labs(title = "Plot of Items Ordered for each Aisle", x = "Aisle ", y = "number of orders")
+```
 
 
 
